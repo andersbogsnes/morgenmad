@@ -1,0 +1,32 @@
+name: morgenmad
+channels: !!python/tuple
+- defaults
+dependencies:
+- click=6.7=py36_0
+- colorama=0.3.7=py36_0
+- flask=0.12=py36_0
+- itsdangerous=0.24=py36_0
+- jinja2=2.9.4=py36_0
+- libpq=9.5.4=vc14_0
+- markupsafe=0.23=py36_2
+- openssl=1.0.2k=vc14_0
+- pip=9.0.1=py36_1
+- psycopg2=2.6.2=py36_0
+- py=1.4.32=py36_0
+- pytest=3.0.5=py36_0
+- python=3.6.0=0
+- setuptools=27.2.0=py36_1
+- vc=14=0
+- vs2015_runtime=14.0.25123=0
+- werkzeug=0.11.15=py36_0
+- wheel=0.29.0=py36_0
+- pip:
+  - alembic==0.8.10
+  - flask-login==0.4.0
+  - flask-migrate==2.0.2
+  - flask-script==2.0.5
+  - flask-sqlalchemy==2.1
+  - mako==1.0.6
+  - python-editor==1.0.3
+  - sqlalchemy==1.1.5
+prefix: C:\Users\Anders\Miniconda3\envs\morgenmad

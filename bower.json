@@ -1,0 +1,24 @@
+{
+  "name": "morgenmad",
+  "authors": [
+    "Anders Bogsnes <andersbogsnes@gmail.com>"
+  ],
+  "description": "Morgenmad app for at varsle om hvem sin tur det er",
+  "main": "",
+  "keywords": [
+    "morgenmad",
+    "turnus"
+  ],
+  "license": "MIT",
+  "homepage": "abogsnes.com",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
