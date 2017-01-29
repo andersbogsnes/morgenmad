@@ -4,3 +4,4 @@ config.py
 static/
 .idea/
 __pycache__/
+*.log
