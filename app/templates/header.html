@@ -9,12 +9,29 @@
     <link href="{{ url_for('static', filename="css/main.css") }}" rel="stylesheet" type="text/css">
 </head>
 <body>
+    <nav class="navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img class="brand" height="75" width="75" src="http://www.almbrand.dk/idc/groups/abdk_web/documents/web_assets/img_logo.png">
+                </a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                {% if user %}
+                <li><a href="#">Min Profil</a></li>
+                <li><a href="#">Logout</a></li>
+                {% else %}
+                <li><a href="#">Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
 {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
-        <div class="flashes">
+        <div class="container">
         <ul>
             {% for category, message in messages %}
-                <div class="{{ category }}">
+                <div class="{{ category }} text-center">
                     {{ message }}
                 </div>
             {% endfor %}
@@ -25,5 +42,7 @@
 {% block content %} {% endblock %}
 <script src="{{ url_for("static", filename="jquery/dist/jquery.js") }}"></script>
 <script src="{{ url_for("static", filename="bootstrap/dist/js/bootstrap.js") }}"></script>
+<script src="https://use.fontawesome.com/3641283060.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

@@ -1,0 +1,97 @@
+{% extends "header.html" %}
+{% block content %}
+
+    <div class="container main">
+
+        <div class="row">
+            <div class="panel-heading">
+                <div class="panel-title  text-center">
+                    <h1 class="title">Registrer</h1>
+                    <hr />
+                </div>
+                        {% if error %}
+            <div class="row">
+                <div class="alert alert-danger text-center error">{{ error }}</div>
+            </div>
+    {% endif %}
+            </div>
+                <form action="/signup" method="post">
+                    {{ form.csrf_token() }}
+                    <div class="form-group">
+                        <label for="name" class="control-label">Navn</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-user fa"></i></span>
+                            {{ form.firstname(class="form-control", placeholder="Fornavn") }}
+                            {{ form.lastname(class="form-control", placeholder="Efternavn") }}
+                        </div>
+                        {% if form.firstname.errors or form.lastname.errors %}
+                            {% for error in form.firstname.errors %}
+                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                            {% endfor %}
+                            {% for error in form.lastname.errors %}
+                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email" class="control-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa"></i></span>
+                            {{ form.email(class="form-control", placeholder="Skriv din Email") }}
+                        </div>
+                        {% if form.email.errors%}
+                            {% for error in form.email.errors %}
+                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tlf_nr" class="control-label">Telefon</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-phone fa"></i></span>
+                            {{ form.tlf_nr(class="form-control", placeholder="Skriv dit Telefon nr") }}
+                        </div>
+                        {% if form.tlf_nr.errors%}
+                            {% for error in form.tlf_nr.errors %}
+                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="control-label">Passord</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-key fa"></i></span>
+                            {{ form.password(class="form-control", id="pass", placeholder="Skriv dit passord") }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password" class="control-label">Gentag Passord</label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-key fa"></i></span>
+                            {{ form.password(class="form-control", id="repeat_pass", placeholder="Gentag passord") }}
+                        </div>
+                        <span id="helpmessage" class=help-block>Passordene matcher ikke!</span>
+                        {% if form.email.errors%}
+                            {% for error in form.email.errors %}
+                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Registrer</button>
+                    </div>
+                </form>
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

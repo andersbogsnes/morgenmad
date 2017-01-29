@@ -1,7 +1,7 @@
 from flask import Flask
 
 from app.views import main_view
-from app.extensions import db, bcrypt, login_manager, migrate
+from app.extensions import db, bcrypt, login_manager, migrate, csrf
 from app.model import User, Morgenmad
 
 
@@ -19,6 +19,7 @@ def register_extensions(app):
     bcrypt.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db=db)
+    csrf.init_app(app)
     return app
 
 

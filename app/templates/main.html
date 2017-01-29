@@ -1,24 +1,9 @@
 {% extends "header.html" %}
 {% block content %}
-    <nav class="navbar navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">
-                    <img class="brand" height="75" width="75" src="http://www.almbrand.dk/idc/groups/abdk_web/documents/web_assets/img_logo.png">
-                </a>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                {% if user %}
-                <li><a href="#">Min Profil</a></li>
-                <li><a href="#">Logout</a></li>
-                {% else %}
-                <li><a href="#">Login</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-    <div class="jumbotron">
+
+    <div class="container main text-center">
         <h1>Velkommen til KSM morgenmadslisten</h1>
+    <br>
 
     </div>
 
