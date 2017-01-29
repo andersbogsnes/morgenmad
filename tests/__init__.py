@@ -1,0 +1,1 @@
+from app.morgenmad import create_app
