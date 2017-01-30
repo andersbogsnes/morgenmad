@@ -28,6 +28,21 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def get_id(self):
+        return str(self.id)
+
+    @property
+    def is_authenticated(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
 
 
 class Morgenmad(db.Model):

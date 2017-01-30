@@ -12,7 +12,7 @@
     <nav class="navbar navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="{{ url_for('main.main') }}">
                     <img class="brand" height="75" width="75" src="http://www.almbrand.dk/idc/groups/abdk_web/documents/web_assets/img_logo.png">
                 </a>
             </div>
@@ -21,7 +21,7 @@
                 <li><a href="#">Min Profil</a></li>
                 <li><a href="#">Logout</a></li>
                 {% else %}
-                <li><a href="#">Login</a></li>
+                <li><a href="{{ url_for('main.signup') }}">Login</a></li>
                 {% endif %}
             </ul>
         </div>
