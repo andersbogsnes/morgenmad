@@ -1,6 +1,7 @@
 from flask import Flask
 
 from app.views import main_view
+from app.user.views import user_blueprint
 from app.extensions import db, bcrypt, login_manager, migrate, csrf, mail
 from app.model import User, Morgenmad
 
@@ -26,4 +27,5 @@ def register_extensions(app):
 
 def register_blueprints(app):
     app.register_blueprint(main_view)
+    app.register_blueprint(user_blueprint)
     return app

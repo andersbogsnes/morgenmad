@@ -1,13 +1,14 @@
 from app.extensions import db, bcrypt
+from flask_login import UserMixin
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     fornavn = db.Column(db.String(250))
     efternavn = db.Column(db.String(250))
     tlf_nr = db.Column(db.String(10), unique=True)
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(128))
+    password = db.Column(db.Binary(128), nullable=False)
     email_confirmed = db.Column(db.Boolean)
     tlf_nr_confirmed = db.Column(db.Boolean)
     morgenmad = db.relationship('Morgenmad', backref='user')
@@ -28,21 +29,7 @@ class User(db.Model):
 
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
-    @property
-    def is_active(self):
-        return True
 
-    @property
-    def get_id(self):
-        return str(self.id)
-
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
 
 
 class Morgenmad(db.Model):
