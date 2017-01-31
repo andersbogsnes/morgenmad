@@ -35,7 +35,7 @@ def signup():
                     email=form.email.data,
                     password=form.password.data
                     )
-        print(user.id)
+
         db.session.add(user)
         db.session.commit()
         token = generate_confirmation_token(form.email.data)
