@@ -1,5 +1,6 @@
-from app.extensions import db, bcrypt
+from app.extensions import db, bcrypt, ma
 from flask_login import UserMixin
+from marshmallow import fields
 
 
 class User(db.Model, UserMixin):
@@ -30,9 +31,17 @@ class User(db.Model, UserMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self.password, password)
 
+    def __repr__(self):
+        return f"<User {self.fullname}>"
 
 
 class Morgenmad(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     dato = db.Column(db.Date)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class UserSchema(ma.ModelSchema):
+    class Meta:
+        model = User
+    email = fields.Email()
