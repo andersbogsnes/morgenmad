@@ -9,14 +9,9 @@
                     <h1 class="title">Registrer</h1>
                     <hr />
                 </div>
-                        {% if error %}
-            <div class="row">
-                <div class="alert alert-danger text-center error">{{ error }}</div>
             </div>
-    {% endif %}
-            </div>
-                <form action="/signup" method="post">
-                    {{ form.csrf_token() }}
+                <form action="{{ url_for('user.signup') }}" method="post">
+                    {{ form.hidden_tag() }}
                     <div class="form-group">
                         <label for="name" class="control-label">Navn</label>
                         <div class="input-group">
@@ -72,7 +67,7 @@
                         <label for="password" class="control-label">Gentag Passord</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key fa"></i></span>
-                            {{ form.password(class="form-control", id="repeat_pass", placeholder="Gentag passord") }}
+                            {{ form.confirm(class="form-control", id="repeat_pass", placeholder="Gentag passord") }}
                         </div>
                         <span id="helpmessage" class=help-block>Passordene matcher ikke!</span>
                         {% if form.email.errors%}

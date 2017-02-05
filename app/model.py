@@ -9,9 +9,10 @@ class User(db.Model, UserMixin):
     efternavn = db.Column(db.String(250))
     tlf_nr = db.Column(db.String(10), unique=True)
     email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.Binary(128), nullable=False)
+    password = db.Column(db.LargeBinary(128), nullable=False)
     email_confirmed = db.Column(db.Boolean)
     tlf_nr_confirmed = db.Column(db.Boolean)
+    list_order = db.Column(db.Integer, autoincrement=True)
     morgenmad = db.relationship('Morgenmad', backref='user')
 
     def __init__(self, fornavn, efternavn, tlf_nr, email, password):

@@ -5,7 +5,7 @@
         <div class="row">
             <div class="panel-heading">
                 <div class="panel-title  text-center">
-                    <h1 class="title">Registrer</h1>
+                    <h1 class="title">Login</h1>
                     <hr />
                 </div>
                         {% if error %}
@@ -15,7 +15,7 @@
     {% endif %}
             </div>
                 <form action="{{ url_for('user.login') }}" method="post">
-                    {{ form.csrf_token() }}
+                    {{ form.hidden_tag() }}
 
                     <div class="form-group">
                         <label for="email" class="control-label">Email</label>
