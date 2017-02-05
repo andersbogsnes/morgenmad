@@ -4,6 +4,25 @@
     <div class="container main text-center">
         <h1>Velkommen til KSM morgenmadslisten</h1>
     <br>
+    {% if data %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Dato</th>
+                    <th>Ansvarlig</th>
+                </tr>
+            </thead>
+        <tbody>
+        {% for ansvarlig in data %}
+            <tr>
+                <td>{{ ansvarlig.dato }}</td>
+                <td>{{ ansvarlig.user.fullname }}</td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+        </table>
+    {% endif %}
 
     </div>
 

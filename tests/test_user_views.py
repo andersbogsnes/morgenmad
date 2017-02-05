@@ -1,4 +1,4 @@
-from flask import url_for
+from flask import url_for, g
 from tests.BaseTestClass import BaseTestClass
 from app.extensions import db
 from app.model import User
@@ -25,12 +25,12 @@ class TestUserViews(BaseTestClass):
                         password='password',
                         confirm='password',
                         tlf_nr='123456')
+        with self.client:
+            response = self.client.post('user/signup', data=new_user)
+            self.assert_redirects(response, url_for('user.profile'))
 
-        response = self.client.post('user/signup', data=new_user)
-        self.assert_redirects(response, url_for('user.profile'))
-
-        user = User.query.filter_by(email=new_user['email']).one()
-        self.assertTrue(user.fornavn == new_user['firstname'])
+            user = User.query.filter_by(email=new_user['email']).one()
+            self.assertTrue(user.fornavn == new_user['firstname'])
 
     def test_login_function_email_validated(self):
         new_user = User(**self.user)
