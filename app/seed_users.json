@@ -1,0 +1,30 @@
+[
+  {
+    "fornavn": "Anders",
+    "efternavn":"Bogsnes",
+    "tlf_nr": "22163821",
+    "email": "andersbogsnes@gmail.com",
+    "password": "password"
+  },
+  {
+    "fornavn": "Dennis",
+    "efternavn":"Jensen",
+    "tlf_nr": "1234567",
+    "email": "dennisjensen@eksempel.com",
+    "password": "password"
+  },
+{
+    "fornavn": "Anette Schrøder",
+    "efternavn":"Mikkelsen",
+    "tlf_nr": "7891011",
+    "email": "anettemikkelsen@eksempel.com",
+    "password": "password"
+  },
+  {
+    "fornavn": "Morten",
+    "efternavn":"Hove",
+    "tlf_nr": "12131415",
+    "email": "mortenhove@eksempel.com",
+    "password": "password"
+  }
+]

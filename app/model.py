@@ -12,8 +12,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.LargeBinary(128), nullable=False)
     email_confirmed = db.Column(db.Boolean)
     tlf_nr_confirmed = db.Column(db.Boolean)
-    list_order = db.Column(db.Integer, autoincrement=True)
     morgenmad = db.relationship('Morgenmad', backref='user')
+    created_on = db.Column(db.DateTime, default=db.func.now())
+    last_modified = db.Column(db.DateTime, onupdate=db.func.now())
 
     def __init__(self, fornavn, efternavn, tlf_nr, email, password):
         self.fornavn = fornavn
@@ -38,7 +39,7 @@ class User(db.Model, UserMixin):
 
 class Morgenmad(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    dato = db.Column(db.Date)
+    dato = db.Column(db.Date, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 

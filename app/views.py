@@ -8,7 +8,7 @@ main_view = Blueprint('main', __name__, template_folder='templates')
 @main_view.route('/')
 def main():
     today = datetime.date.today()
-    twenty_days = datetime.timedelta(days=10)
+    twenty_days = datetime.timedelta(days=20)
     fridays = (db.session.query(Morgenmad)
                .filter(Morgenmad.dato.between((today-twenty_days),
                                               (today+twenty_days))))
