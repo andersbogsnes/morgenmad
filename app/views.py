@@ -10,8 +10,9 @@ def main():
     today = datetime.date.today()
     twenty_days = datetime.timedelta(days=20)
     fridays = (db.session.query(Morgenmad)
-               .filter(Morgenmad.dato.between((today-twenty_days),
-                                              (today+twenty_days))))
+               .filter(Morgenmad.dato.between(today-twenty_days,
+                                              today+twenty_days))
+               .order_by(Morgenmad.dato))
 
     return render_template('main.html', data=fridays)
 

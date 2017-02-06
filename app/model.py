@@ -2,6 +2,9 @@ from app.extensions import db, bcrypt, ma
 from flask_login import UserMixin
 from marshmallow import fields
 
+morgenmad_users_table = db.Table('morgenmad_users',
+                                 db.Column('morgenmad_id', db.Integer, db.ForeignKey('morgenmad.id')),
+                                 db.Column('user_id', db.Integer, db.ForeignKey('user.id')))
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -41,6 +44,12 @@ class Morgenmad(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     dato = db.Column(db.Date, unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_next = db.Column(db.Boolean)
+    accepted_users = db.relationship('User',
+                                     secondary=morgenmad_users_table,
+                                     backref=db.backref('accepteret'))
+
+
 
 
 class UserSchema(ma.ModelSchema):

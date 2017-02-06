@@ -4,21 +4,24 @@
     <div class="container main text-center">
         <h1>Velkommen til KSM morgenmadslisten</h1>
     <br>
+    </div>
+    <div class="container main-table">
     {% if data %}
         <table class="table">
             <thead>
                 <tr>
                     <th>Dato</th>
                     <th>Ansvarlig</th>
+                    <th>Antal accepteret</th>
                 </tr>
             </thead>
         <tbody>
         {% for ansvarlig in data %}
-            <tr>
-                <td>{{ ansvarlig.dato }}</td>
+            <tr class="{{ "success" if ansvarlig.is_next}}">
+                <td>{{ ansvarlig.dato.strftime("%d-%m-%y") }}</td>
                 <td>{{ ansvarlig.user.fullname }}</td>
+                <td>{{ ansvarlig.accepted_users|length }}</td>
             </tr>
-
         {% endfor %}
         </tbody>
         </table>
