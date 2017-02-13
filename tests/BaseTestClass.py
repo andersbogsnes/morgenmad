@@ -1,7 +1,7 @@
 from flask_testing import TestCase
-from app.morgenmad import create_app
-from app.config import TestConfig
-from app.extensions import db
+from morgenmad.app import create_app
+from morgenmad.config import TestConfig
+from morgenmad.extensions import db
 
 
 class BaseTestClass(TestCase):

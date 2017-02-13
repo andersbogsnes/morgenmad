@@ -1,17 +1,20 @@
-from app.utils import MaintainDates
-from tests.BaseTestClass import BaseTestClass
-from app.extensions import db
-from app.model import User, Morgenmad
-import unittest
 import datetime
+import unittest
+
+from morgenmad.extensions import db
+from morgenmad.user.model import User, Morgenmad
+from morgenmad.utils import MaintainDates
+from morgenmad.config import TestConfig
+from tests.BaseTestClass import BaseTestClass
 
 
-class TestGenerateDates(unittest.TestCase):
+
+class TestGenerateDates(BaseTestClass):
     def setUp(self):
-        self.dates = MaintainDates(2017, 2018)
+        super().setUp()
+        self.dates = MaintainDates(2017, 2018, config=TestConfig)
 
     def test_two_years(self):
-
         dates = [date for date in self.dates.generate_dates()]
         self.assertTrue(len(dates) == 104)
         self.assertTrue(isinstance(dates[0], datetime.date))
@@ -49,31 +52,29 @@ class TestGenerateDates(unittest.TestCase):
 
 
 class TestInsertDatesIntoMorgenmad(BaseTestClass):
-    def setUp(self):
-        super().setUp()
-        self.user = dict(fornavn="Testy", efternavn="Mctesterson", email="test@testing.com", tlf_nr="12345678",
-                         password="secret")
 
-
+    def test_user_insertion(self):
         user = User(**self.user)
         db.session.add(user)
         db.session.commit()
-        self.dates_util = MaintainDates(2017, 2018)
-
-    def test_user_insertion(self):
-        self.dates_util.insert_dates_between_years()
-        self.dates_util.users_per_breakfast()
+        dates_util = MaintainDates(2017, 2018, config=TestConfig)
+        dates_util.insert_dates_between_years()
+        dates_util.users_per_breakfast()
         result = db.session.query(User).first()
         self.assertTrue(result.morgenmad)
         self.assertTrue(len(result.morgenmad) == 104)
 
     def test_morgenmad_insertion(self):
-        self.dates_util.insert_dates_between_years()
-        self.dates_util.users_per_breakfast()
-        result = db.session.query(Morgenmad).first()
+        user = User(**self.user)
+        db.create_all()
+        db.session.add(user)
+        db.session.commit()
+        dates_util = MaintainDates(2017, 2018, config=TestConfig)
+        dates_util.insert_dates_between_years()
+        dates_util.users_per_breakfast()
+        result = Morgenmad.query.first()
         self.assertTrue(result.user.id == 1)
         self.assertTrue(result.user.email == self.user['email'])
 
         result = Morgenmad.query.all()
         self.assertTrue(all([friday.user.id == 1 for friday in result]))
-

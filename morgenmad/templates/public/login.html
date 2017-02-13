@@ -8,16 +8,15 @@
                     <h1 class="title">Login</h1>
                     <hr />
                 </div>
-                        {% if error %}
-            <div class="row">
-                <div class="alert alert-danger text-center error">{{ error }}</div>
-            </div>
-    {% endif %}
-            </div>
-                <form action="{{ url_for('user.login') }}" method="post">
-                    {{ form.hidden_tag() }}
 
+            </div>
+                <form action="{{ url_for('public.login') }}" method="post">
+                    {{ form.hidden_tag() }}
+                    {% if form.email.errors %}
+                    <div class="form-group has-error">
+                    {% else %}
                     <div class="form-group">
+                    {% endif %}
                         <label for="email" class="control-label">Email</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-envelope fa"></i></span>
@@ -25,21 +24,30 @@
                         </div>
                         {% if form.email.errors%}
                             {% for error in form.email.errors %}
-                                <p class="bg-danger"><span class="help-message">{{ error }}</span></p>
+                               <span class="help-block">{{ error }}</span>
                             {% endfor %}
                         {% endif %}
                     </div>
 
-                    <div class="form-group">
+                    {% if form.password.errors %}
+                        <div class="form-group has-error">
+                    {% else %}
+                        <div class="form-group">
+                    {% endif %}
                         <label for="password" class="control-label">Passord</label>
                         <div class="input-group">
                             <span class="input-group-addon"><i class="fa fa-key fa"></i></span>
                             {{ form.password(class="form-control", placeholder="Skriv dit passord") }}
                         </div>
+                        {% if form.password.errors%}
+                            {% for error in form.password.errors %}
+                               <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary">Login</button>
-                        <a href="{{ url_for('user.signup') }}" class="pull-right">Ny Bruger?</a>
+                        <a href="{{ url_for('public.signup') }}" class="pull-right">Ny Bruger?</a>
                     </div>
 
                 </form>

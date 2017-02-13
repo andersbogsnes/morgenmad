@@ -1,13 +1,12 @@
 from itsdangerous import URLSafeTimedSerializer
-from app.config import BaseConfig
+from morgenmad.config import BaseConfig
 from flask_mail import Message
-from app.extensions import mail, db
-from app.model import Morgenmad, User
-from app.morgenmad import create_app
+from morgenmad.extensions import mail
+from morgenmad.user.model import Morgenmad, User
 from datetime import date, timedelta
 from itertools import cycle
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 import json
 import pathlib
 
@@ -37,17 +36,26 @@ def send_confirmation_email(to, subject, template):
     mail.send(msg)
 
 
+def next_friday():
+    d = date.today()
+    while d.weekday() != 4:
+        d = d + timedelta(days=1)
+    return d
+
+
 class MaintainDates:
     """Container class for all utilities for maintain Dates in the database.
     :param start_year: Year to begin counting. Inclusive
     :param end_year: Year to end counting. Inclusive
     :param weekday: Default 4 = Friday. Weekdays indexed from 0. Also accepts lists of weekdays
      """
-    def __init__(self, start_year=None, end_year=None, weekday=4):
+
+    def __init__(self, start_year=None, end_year=None, weekday=4, config=BaseConfig):
         self.start_year = start_year or date.today().year
         self.end_year = end_year or self.start_year + 1
         self.weekday = weekday
-        self.app = create_app(BaseConfig)
+        self.engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
+        self.session = sessionmaker(bind=self.engine)()
 
     def generate_dates(self):
         """Helper to generate every given weekday between start_year and end_year
@@ -79,37 +87,45 @@ class MaintainDates:
 
     def insert_dates_between_years(self):
         """Inserts all dates generated in the interval"""
-        with self.app.app_context():
-            for given_date in self.generate_dates():
-                if not db.session.query(Morgenmad).filter_by(dato=given_date).first():
-                    morgenmad = Morgenmad(dato=given_date)
-                    db.session.add(morgenmad)
-            db.session.commit()
+        for given_date in self.generate_dates():
+            if not self.session.query(Morgenmad).filter_by(dato=given_date).first():
+                morgenmad = Morgenmad(dato=given_date)
+                self.session.add(morgenmad)
+            self.session.commit()
 
     def users_per_breakfast(self):
-        unassigned_breakfast = db.session.query(Morgenmad).filter(Morgenmad.user == None).all()
-        all_users = db.session.query(User).order_by(User.id).all()
+        unassigned_breakfast = self.session.query(Morgenmad).filter(Morgenmad.user == None).all()
+        all_users = self.session.query(User).order_by(User.id).all()
         for breakfast, user in zip(unassigned_breakfast, cycle(all_users)):
             breakfast.user = user
-            db.session.add(breakfast)
-        db.session.commit()
+            self.session.add(breakfast)
+        self.session.commit()
 
     def set_active_morgenmad(self):
-        next_breakfast = db.session.query(Morgenmad).filter(Morgenmad.dato > func.now()).first()
+        last_breakfast = self.session.query(Morgenmad).filter(Morgenmad.is_next).first()
+        if last_breakfast:
+            last_breakfast.is_next = False
+            self.session.add(last_breakfast)
+        next_breakfast = self.session.query(Morgenmad).filter(Morgenmad.dato == next_friday()).first()
         next_breakfast.is_next = True
-        db.session.add(next_breakfast)
-        db.session.commit()
+        self.session.add(next_breakfast)
+        self.session.commit()
 
     def seed_db(self):
-        users_json = pathlib.Path(BaseConfig.ROOT_DIR).joinpath('seed_users.json')
+        users_json = pathlib.Path(BaseConfig.PROJECT_DIR).joinpath('seed_users.json')
         self.seed_users(users_json)
         self.insert_dates_between_years()
         self.users_per_breakfast()
         self.set_active_morgenmad()
 
+    def update_db(self):
+        self.insert_dates_between_years()
+        self.users_per_breakfast()
+        self.set_active_morgenmad()
+
     @staticmethod
-    def seed_users(users_json):
-        engine = create_engine(BaseConfig.SQLALCHEMY_DATABASE_URI)
+    def seed_users(users_json, config=BaseConfig):
+        engine = create_engine(config.SQLALCHEMY_DATABASE_URI)
         Session = sessionmaker(bind=engine)
         session = Session()
         path = pathlib.Path(users_json)
