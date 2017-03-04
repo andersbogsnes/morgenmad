@@ -8,10 +8,10 @@ from morgenmad.config import TestConfig
 from tests.BaseTestClass import BaseTestClass
 
 
-
 class TestGenerateDates(BaseTestClass):
     def setUp(self):
         super().setUp()
+
         self.dates = MaintainDates(2017, 2018, config=TestConfig)
 
     def test_two_years(self):
@@ -50,31 +50,8 @@ class TestGenerateDates(BaseTestClass):
 
         self.assertRaises(TypeError, dates_util.generate_dates())
 
-
-class TestInsertDatesIntoMorgenmad(BaseTestClass):
-
-    def test_user_insertion(self):
-        user = User(**self.user)
-        db.session.add(user)
-        db.session.commit()
-        dates_util = MaintainDates(2017, 2018, config=TestConfig)
-        dates_util.insert_dates_between_years()
-        dates_util.users_per_breakfast()
-        result = db.session.query(User).first()
-        self.assertTrue(result.morgenmad)
-        self.assertTrue(len(result.morgenmad) == 104)
-
-    def test_morgenmad_insertion(self):
-        user = User(**self.user)
-        db.create_all()
-        db.session.add(user)
-        db.session.commit()
-        dates_util = MaintainDates(2017, 2018, config=TestConfig)
-        dates_util.insert_dates_between_years()
-        dates_util.users_per_breakfast()
-        result = Morgenmad.query.first()
-        self.assertTrue(result.user.id == 1)
-        self.assertTrue(result.user.email == self.user['email'])
-
-        result = Morgenmad.query.all()
-        self.assertTrue(all([friday.user.id == 1 for friday in result]))
+class TestMaintainDates(BaseTestClass):
+    def test_seed_db(self):
+        maintain = MaintainDates(config=TestConfig)
+        maintain.seed_db()
+        self.assertTrue(User.query.get(1) is not None)

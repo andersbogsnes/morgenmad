@@ -28,10 +28,12 @@ def register_blueprints(app):
     app.register_blueprint(user_blueprint)
     return None
 
+
 def register_errorhandlers(app):
     def render_error(error):
         error_code = getattr(error, 'code', 500)
         return render_template(f'{error_code}.html'), error_code
+
     for errcode in [404, 500]:
         app.errorhandler(errcode)(render_error)
     return None
